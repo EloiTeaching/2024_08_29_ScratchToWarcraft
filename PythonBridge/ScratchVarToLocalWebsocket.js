@@ -38,7 +38,7 @@ To use this script you need to recover it with a websocket server of your own an
 console.log("Hello Tamper to Integer :).\n Websocket client will try to connect to websocket server. \n  ")
 
 // Creating url to push on local computer at the port 7073 the integer that changed.
-var socketUrl= 'ws://localhost:7073';
+var socketUrl= 'ws://localhost:7072';
 // Defined the var of the future websocket client
 var socket = null;
 // Will be use to have a way to know that the server is still in theory connected
