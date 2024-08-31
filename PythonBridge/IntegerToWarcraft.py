@@ -254,20 +254,21 @@ def is_window_focused(hwnd):
 
 def send_key_press(hwnd, key_code):
    
-        #print("A")
-        ctypes.windll.user32.PostMessageW(hwnd, WM_KEYDOWN, key_code, 0)
-
-        #print("B")
+        
+        
+        ctypes.windll.user32.PostMessageW(int(hwnd), WM_KEYDOWN, int(key_code), 0)
         # child_windows = enum_child_windows(hwnd)
         # for child_hwnd in child_windows:
-        #     ctypes.windll.user32.SendMessageW(child_hwnd, WM_KEYDOWN, key_code, 0)
+        #     print(f"       Press child {str(hex_value)} to {child_hwnd }")  
+        #     ctypes.windll.user32.PostMessageW(child_hwnd, WM_KEYDOWN, char_value, 0)
 
 def send_key_release(hwnd, key_code):
    
-        ctypes.windll.user32.PostMessageW(hwnd, WM_KEYUP, key_code, 0)
+        ctypes.windll.user32.PostMessageW(int(hwnd), WM_KEYUP, int(key_code), 0)
         # child_windows = enum_child_windows(hwnd)
         # for child_hwnd in child_windows:
-        #     ctypes.windll.user32.SendMessageW(child_hwnd, WM_KEYUP, key_code, 0)
+        #     print(f"       Release child {str(hex_value)} to {child_hwnd }")  
+        #     ctypes.windll.user32.PostMessageW(child_hwnd, WM_KEYUP, char_value, 0)
 
 
 
@@ -290,7 +291,10 @@ def push_to_all_integer(int_value):
 
 def push_test(window, press, key_id):
     global debug_at_pression_send
-    print(f"Push {press} {key_id} to {window.title}")
+    
+
+    
+    print(f"Test {press} {key_id} to {window.title} / {window._hWnd}")
     if window:
         if press==True:
             if debug_at_pression_send:
@@ -316,7 +320,9 @@ def push_to_index_integer(int_index, int_value):
         return
         
     
-    print(f"Push {int_value} to {int_index}")
+    print(f"Push {int_value} to Window {int_index} ({key_info[0].name} / {key_info[0].hexadecimal})")
+    print(f"Push {key_info[0]}")
+
     ## Is player index existing in register
     if( int_index in player_index_to_window_index):
         ## Get the list of window index for this player to broadcast
@@ -328,11 +334,13 @@ def push_to_index_integer(int_index, int_value):
                     ## If the value is existing in the mapping allows to player
                     int_value_as_string = str(int_value)
                     
+                    print (f"{int_value}  {key_info[1]}   {key_info[2]}")
+                    
                     if key_info[1]:
-                        push_test(all_found_windows_at_start[window_index], True, key_info[0].hexadecimal)
+                        push_test(all_found_windows_at_start[window_index], True, key_info[0].decimal)
                         
                     if key_info[2]:
-                        push_test(all_found_windows_at_start[window_index], False, key_info[0].hexadecimal)
+                        push_test(all_found_windows_at_start[window_index], False, key_info[0].decimal)
                         
         #if(one_found):
         #    print(f"Index {int_index} | Value {int_value} | Key {key_name_last_found} | Press {press_last_found}")
@@ -427,142 +435,142 @@ class KeyInfo:
 class KeyMap:
     def __init__(self):
         self.keys = {
-            "Backspace": KeyInfo("Backspace", 8, "0x08", 1008, 2008),
-            "Tab": KeyInfo("Tab", 9, "0x09", 1009, 2009),
-            "Clear": KeyInfo("Clear", 12, "0x0C", 1012, 2012),
-            "Enter": KeyInfo("Enter", 13, "0x0D", 1013, 2013),
-            "Shift": KeyInfo("Shift", 16, "0x10", 1016, 2016),
-            "Ctrl": KeyInfo("Ctrl", 17, "0x11", 1017, 2017),
-            "Alt": KeyInfo("Alt", 18, "0x12", 1018, 2018),
-            "Pause": KeyInfo("Pause", 19, "0x13", 1019, 2019),
-            "CapsLock": KeyInfo("CapsLock", 20, "0x14", 1020, 2020),
-            "Esc": KeyInfo("Esc", 27, "0x1B", 1027, 2027),
-            "Escape": KeyInfo("Escape", 27, "0x1B", 1027, 2027),
-            "Space": KeyInfo("Space", 32, "0x20", 1032, 2032),
-            "PageUp": KeyInfo("PageUp", 33, "0x21", 1033, 2033),
-            "PageDown": KeyInfo("PageDown", 34, "0x22", 1034, 2034),
-            "End": KeyInfo("End", 35, "0x23", 1035, 2035),
-            "Home": KeyInfo("Home", 36, "0x24", 1036, 2036),
-            "LeftArrow": KeyInfo("LeftArrow", 37, "0x25", 1037, 2037),
-            "Left": KeyInfo("Left", 37, "0x25", 1037, 2037),
-            "UpArrow": KeyInfo("UpArrow", 38, "0x26", 1038, 2038),
-            "Up": KeyInfo("Up", 38, "0x26", 1038, 2038),
-            "RightArrow": KeyInfo("RightArrow", 39, "0x27", 1039, 2039),
-            "Right": KeyInfo("Right", 39, "0x27", 1039, 2039),
-            "DownArrow": KeyInfo("DownArrow", 40, "0x28", 1040, 2040),
-            "Down": KeyInfo("Down", 40, "0x28", 1040, 2040),
-            "Select": KeyInfo("Select", 41, "0x29", 1041, 2041),
-            "Print": KeyInfo("Print", 42, "0x2A", 1042, 2042),
-            "Execute": KeyInfo("Execute", 43, "0x2B", 1043, 2043),
-            "PrintScreen": KeyInfo("PrintScreen", 44, "0x2C", 1044, 2044),
-            "Insert": KeyInfo("Insert", 45, "0x2D", 1045, 2045),
-            "Delete": KeyInfo("Delete", 46, "0x2E", 1046, 2046),
-            "0": KeyInfo("0", 48, "0x30", 1048, 2048),
-            "1": KeyInfo("1", 49, "0x31", 1049, 2049),
-            "2": KeyInfo("2", 50, "0x32", 1050, 2050),
-            "3": KeyInfo("3", 51, "0x33", 1051, 2051),
-            "4": KeyInfo("4", 52, "0x34", 1052, 2052),
-            "5": KeyInfo("5", 53, "0x35", 1053, 2053),
-            "6": KeyInfo("6", 54, "0x36", 1054, 2054),
-            "7": KeyInfo("7", 55, "0x37", 1055, 2055),
-            "8": KeyInfo("8", 56, "0x38", 1056, 2056),
-            "9": KeyInfo("9", 57, "0x39", 1057, 2057),
-            "A": KeyInfo("A", 65, "0x41", 1065, 2065),
-            "B": KeyInfo("B", 66, "0x42", 1066, 2066),
-            "C": KeyInfo("C", 67, "0x43", 1067, 2067),
-            "D": KeyInfo("D", 68, "0x44", 1068, 2068),
-            "E": KeyInfo("E", 69, "0x45", 1069, 2069),
-            "F": KeyInfo("F", 70, "0x46", 1070, 2070),
-            "G": KeyInfo("G", 71, "0x47", 1071, 2071),
-            "H": KeyInfo("H", 72, "0x48", 1072, 2072),
-            "I": KeyInfo("I", 73, "0x49", 1073, 2073),
-            "J": KeyInfo("J", 74, "0x4A", 1074, 2074),
-            "K": KeyInfo("K", 75, "0x4B", 1075, 2075),
-            "L": KeyInfo("L", 76, "0x4C", 1076, 2076),
-            "M": KeyInfo("M", 77, "0x4D", 1077, 2077),
-            "N": KeyInfo("N", 78, "0x4E", 1078, 2078),
-            "O": KeyInfo("O", 79, "0x4F", 1079, 2079),
-            "P": KeyInfo("P", 80, "0x50", 1080, 2080),
-            "Q": KeyInfo("Q", 81, "0x51", 1081, 2081),
-            "R": KeyInfo("R", 82, "0x52", 1082, 2082),
-            "S": KeyInfo("S", 83, "0x53", 1083, 2083),
-            "T": KeyInfo("T", 84, "0x54", 1084, 2084),
-            "U": KeyInfo("U", 85, "0x55", 1085, 2085),
-            "V": KeyInfo("V", 86, "0x56", 1086, 2086),
-            "W": KeyInfo("W", 87, "0x57", 1087, 2087),
-            "X": KeyInfo("X", 88, "0x58", 1088, 2088),
-            "Y": KeyInfo("Y", 89, "0x59", 1089, 2089),
-            "Z": KeyInfo("Z", 90, "0x5A", 1090, 2090),
-            "LeftWindows": KeyInfo("LeftWindows", 91, "0x5B", 1091, 2091),
-            "RightWindows": KeyInfo("RightWindows", 92, "0x5C", 1092, 2092),
-            "Applications": KeyInfo("Applications", 93, "0x5D", 1093, 2093),
-            "Sleep": KeyInfo("Sleep", 95, "0x5F", 1095, 2095),
-            "Numpad0": KeyInfo("Numpad0", 96, "0x60", 1096, 2096),
-            "Numpad1": KeyInfo("Numpad1", 97, "0x61", 1097, 2097),
-            "Numpad2": KeyInfo("Numpad2", 98, "0x62", 1098, 2098),
-            "Numpad3": KeyInfo("Numpad3", 99, "0x63", 1099, 2099),
-            "Numpad4": KeyInfo("Numpad4", 100, "0x64", 1100, 2100),
-            "Numpad5": KeyInfo("Numpad5", 101, "0x65", 1101, 2101),
-            "Numpad6": KeyInfo("Numpad6", 102, "0x66", 1102, 2102),
-            "Numpad7": KeyInfo("Numpad7", 103, "0x67", 1103, 2103),
-            "Numpad8": KeyInfo("Numpad8", 104, "0x68", 1104, 2104),
-            "Numpad9": KeyInfo("Numpad9", 105, "0x69", 1105, 2105),
-            "Multiply": KeyInfo("Multiply", 106, "0x6A", 1106, 2106),
-            "Add": KeyInfo("Add", 107, "0x6B", 1107, 2107),
-            "Separator": KeyInfo("Separator", 108, "0x6C", 1108, 2108),
-            "Subtract": KeyInfo("Subtract", 109, "0x6D", 1109, 2109),
-            "Decimal": KeyInfo("Decimal", 110, "0x6E", 1110, 2110),
-            "Divide": KeyInfo("Divide", 111, "0x6F", 1111, 2111),
-            "F1": KeyInfo("F1", 112, "0x70", 1112, 2112),
-            "F2": KeyInfo("F2", 113, "0x71", 1113, 2113),
-            "F3": KeyInfo("F3", 114, "0x72", 1114, 2114),
-            "F4": KeyInfo("F4", 115, "0x73", 1115, 2115),
-            "F5": KeyInfo("F5", 116, "0x74", 1116, 2116),
-            "F6": KeyInfo("F6", 117, "0x75", 1117, 2117),
-            "F7": KeyInfo("F7", 118, "0x76", 1118, 2118),
-            "F8": KeyInfo("F8", 119, "0x77", 1119, 2119),
-            "F9": KeyInfo("F9", 120, "0x78", 1120, 2120),
-            "F10": KeyInfo("F10", 121, "0x79", 1121, 2121),
-            "F11": KeyInfo("F11", 122, "0x7A", 1122, 2122),
-            "F12": KeyInfo("F12", 123, "0x7B", 1123, 2123),
-            "F13": KeyInfo("F13", 124, "0x7C", 1124, 2124),
-            "F14": KeyInfo("F14", 125, "0x7D", 1125, 2125),
-            "F15": KeyInfo("F15", 126, "0x7E", 1126, 2126),
-            "F16": KeyInfo("F16", 127, "0x7F", 1127, 2127),
-            "F17": KeyInfo("F17", 128, "0x80", 1128, 2128),
-            "F18": KeyInfo("F18", 129, "0x81", 1129, 2129),
-            "F19": KeyInfo("F19", 130, "0x82", 1130, 2130),
-            "F20": KeyInfo("F20", 131, "0x83", 1131, 2131),
-            "F21": KeyInfo("F21", 132, "0x84", 1132, 2132),
-            "F22": KeyInfo("F22", 133, "0x85", 1133, 2133),
-            "F23": KeyInfo("F23", 134, "0x86", 1134, 2134),
-            "F24": KeyInfo("F24", 135, "0x87", 1135, 2135),
-            "NumLock": KeyInfo("NumLock", 144, "0x90", 1144, 2144),
-            "ScrollLock": KeyInfo("ScrollLock", 145, "0x91", 1145, 2145),
-            "LeftShift": KeyInfo("LeftShift", 160, "0xA0", 1160, 2160),
-            "RightShift": KeyInfo("RightShift", 161, "0xA1", 1161, 2161),
-            "LeftCtrl": KeyInfo("LeftCtrl", 162, "0xA2", 1162, 2162),
-            "RightCtrl": KeyInfo("RightCtrl", 163, "0xA3", 1163, 2163),
-            "LeftMenu": KeyInfo("LeftMenu", 164, "0xA4", 1164, 2164),
-            "RightMenu": KeyInfo("RightMenu", 165, "0xA5", 1165, 2165),
-            "BrowserBack": KeyInfo("BrowserBack", 166, "0xA6", 1166, 2166),
-            "BrowserForward": KeyInfo("BrowserForward", 167, "0xA7", 1167, 2167),
-            "BrowserRefresh": KeyInfo("BrowserRefresh", 168, "0xA8", 1168, 2168),
-            "BrowserStop": KeyInfo("BrowserStop", 169, "0xA9", 1169, 2169),
-            "BrowserSearch": KeyInfo("BrowserSearch", 170, "0xAA", 1170, 2170),
-            "BrowserFavorites": KeyInfo("BrowserFavorites", 171, "0xAB", 1171, 2171),
-            "BrowserHome": KeyInfo("BrowserHome", 172, "0xAC", 1172, 2172),
-            "VolumeMute": KeyInfo("VolumeMute", 173, "0xAD", 1173, 2173),
-            "VolumeDown": KeyInfo("VolumeDown", 174, "0xAE", 1174, 2174),
-            "VolumeUp": KeyInfo("VolumeUp", 175, "0xAF", 1175, 2175),
-            "MediaNextTrack": KeyInfo("MediaNextTrack", 176, "0xB0", 1176, 2176),
-            "MediaPrevTrack": KeyInfo("MediaPrevTrack", 177, "0xB1", 1177, 2177),
-            "MediaStop": KeyInfo("MediaStop", 178, "0xB2", 1178, 2178),
-            "MediaPlayPause": KeyInfo("MediaPlayPause", 179, "0xB3", 1179, 2179),
-            "LaunchMail": KeyInfo("LaunchMail", 180, "0xB4", 1180, 2180),
-            "LaunchMediaSelect": KeyInfo("LaunchMediaSelect", 181, "0xB5", 1181, 2181),
-            "LaunchApp1": KeyInfo("LaunchApp1", 182, "0xB6", 1182, 2182),
-            "LaunchApp2": KeyInfo("LaunchApp2", 183, "0xB7", 1183, 2183),
+            "Backspace": KeyInfo("Backspace", 8, 0x08, 1008, 2008),
+            "Tab": KeyInfo("Tab", 9, 0x09, 1009, 2009),
+            "Clear": KeyInfo("Clear", 12, 0x0C, 1012, 2012),
+            "Enter": KeyInfo("Enter", 13, 0x0D, 1013, 2013),
+            "Shift": KeyInfo("Shift", 16, 0x10, 1016, 2016),
+            "Ctrl": KeyInfo("Ctrl", 17, 0x11, 1017, 2017),
+            "Alt": KeyInfo("Alt", 18, 0x12, 1018, 2018),
+            "Pause": KeyInfo("Pause", 19, 0x13, 1019, 2019),
+            "CapsLock": KeyInfo("CapsLock", 20, 0x14, 1020, 2020),
+            "Esc": KeyInfo("Esc", 27, 0x1B, 1027, 2027),
+            "Escape": KeyInfo("Escape", 27, 0x1B, 1027, 2027),
+            "Space": KeyInfo("Space", 32, 0x20, 1032, 2032),
+            "PageUp": KeyInfo("PageUp", 33, 0x21, 1033, 2033),
+            "PageDown": KeyInfo("PageDown", 34, 0x22, 1034, 2034),
+            "End": KeyInfo("End", 35, 0x23, 1035, 2035),
+            "Home": KeyInfo("Home", 36, 0x24, 1036, 2036),
+            "LeftArrow": KeyInfo("LeftArrow", 37, 0x25, 1037, 2037),
+            "Left": KeyInfo("Left", 37, 0x25, 1037, 2037),
+            "UpArrow": KeyInfo("UpArrow", 38, 0x26, 1038, 2038),
+            "Up": KeyInfo("Up", 38, 0x26, 1038, 2038),
+            "RightArrow": KeyInfo("RightArrow", 39, 0x27, 1039, 2039),
+            "Right": KeyInfo("Right", 39, 0x27, 1039, 2039),
+            "DownArrow": KeyInfo("DownArrow", 40, 0x28, 1040, 2040),
+            "Down": KeyInfo("Down", 40, 0x28, 1040, 2040),
+            "Select": KeyInfo("Select", 41, 0x29, 1041, 2041),
+            "Print": KeyInfo("Print", 42, 0x2A, 1042, 2042),
+            "Execute": KeyInfo("Execute", 43, 0x2B, 1043, 2043),
+            "PrintScreen": KeyInfo("PrintScreen", 44, 0x2C, 1044, 2044),
+            "Insert": KeyInfo("Insert", 45, 0x2D, 1045, 2045),
+            "Delete": KeyInfo("Delete", 46, 0x2E, 1046, 2046),
+            "0": KeyInfo("0", 48, 0x30, 1048, 2048),
+            "1": KeyInfo("1", 49, 0x31, 1049, 2049),
+            "2": KeyInfo("2", 50, 0x32, 1050, 2050),
+            "3": KeyInfo("3", 51, 0x33, 1051, 2051),
+            "4": KeyInfo("4", 52, 0x34, 1052, 2052),
+            "5": KeyInfo("5", 53, 0x35, 1053, 2053),
+            "6": KeyInfo("6", 54, 0x36, 1054, 2054),
+            "7": KeyInfo("7", 55, 0x37, 1055, 2055),
+            "8": KeyInfo("8", 56, 0x38, 1056, 2056),
+            "9": KeyInfo("9", 57, 0x39, 1057, 2057),
+            "A": KeyInfo("A", 65, 0x41, 1065, 2065),
+            "B": KeyInfo("B", 66, 0x42, 1066, 2066),
+            "C": KeyInfo("C", 67, 0x43, 1067, 2067),
+            "D": KeyInfo("D", 68, 0x44, 1068, 2068),
+            "E": KeyInfo("E", 69, 0x45, 1069, 2069),
+            "F": KeyInfo("F", 70, 0x46, 1070, 2070),
+            "G": KeyInfo("G", 71, 0x47, 1071, 2071),
+            "H": KeyInfo("H", 72, 0x48, 1072, 2072),
+            "I": KeyInfo("I", 73, 0x49, 1073, 2073),
+            "J": KeyInfo("J", 74, 0x4A, 1074, 2074),
+            "K": KeyInfo("K", 75, 0x4B, 1075, 2075),
+            "L": KeyInfo("L", 76, 0x4C, 1076, 2076),
+            "M": KeyInfo("M", 77, 0x4D, 1077, 2077),
+            "N": KeyInfo("N", 78, 0x4E, 1078, 2078),
+            "O": KeyInfo("O", 79, 0x4F, 1079, 2079),
+            "P": KeyInfo("P", 80, 0x50, 1080, 2080),
+            "Q": KeyInfo("Q", 81, 0x51, 1081, 2081),
+            "R": KeyInfo("R", 82, 0x52, 1082, 2082),
+            "S": KeyInfo("S", 83, 0x53, 1083, 2083),
+            "T": KeyInfo("T", 84, 0x54, 1084, 2084),
+            "U": KeyInfo("U", 85, 0x55, 1085, 2085),
+            "V": KeyInfo("V", 86, 0x56, 1086, 2086),
+            "W": KeyInfo("W", 87, 0x57, 1087, 2087),
+            "X": KeyInfo("X", 88, 0x58, 1088, 2088),
+            "Y": KeyInfo("Y", 89, 0x59, 1089, 2089),
+            "Z": KeyInfo("Z", 90, 0x5A, 1090, 2090),
+            "LeftWindows": KeyInfo("LeftWindows", 91, 0x5B, 1091, 2091),
+            "RightWindows": KeyInfo("RightWindows", 92, 0x5C, 1092, 2092),
+            "Applications": KeyInfo("Applications", 93, 0x5D, 1093, 2093),
+            "Sleep": KeyInfo("Sleep", 95, 0x5F, 1095, 2095),
+            "Numpad0": KeyInfo("Numpad0", 96, 0x60, 1096, 2096),
+            "Numpad1": KeyInfo("Numpad1", 97, 0x61, 1097, 2097),
+            "Numpad2": KeyInfo("Numpad2", 98, 0x62, 1098, 2098),
+            "Numpad3": KeyInfo("Numpad3", 99, 0x63, 1099, 2099),
+            "Numpad4": KeyInfo("Numpad4", 100, 0x64, 1100, 2100),
+            "Numpad5": KeyInfo("Numpad5", 101, 0x65, 1101, 2101),
+            "Numpad6": KeyInfo("Numpad6", 102, 0x66, 1102, 2102),
+            "Numpad7": KeyInfo("Numpad7", 103, 0x67, 1103, 2103),
+            "Numpad8": KeyInfo("Numpad8", 104, 0x68, 1104, 2104),
+            "Numpad9": KeyInfo("Numpad9", 105, 0x69, 1105, 2105),
+            "Multiply": KeyInfo("Multiply", 106, 0x6A, 1106, 2106),
+            "Add": KeyInfo("Add", 107, 0x6B, 1107, 2107),
+            "Separator": KeyInfo("Separator", 108, 0x6C, 1108, 2108),
+            "Subtract": KeyInfo("Subtract", 109, 0x6D, 1109, 2109),
+            "Decimal": KeyInfo("Decimal", 110, 0x6E, 1110, 2110),
+            "Divide": KeyInfo("Divide", 111, 0x6F, 1111, 2111),
+            "F1": KeyInfo("F1", 112, 0x70, 1112, 2112),
+            "F2": KeyInfo("F2", 113, 0x71, 1113, 2113),
+            "F3": KeyInfo("F3", 114, 0x72, 1114, 2114),
+            "F4": KeyInfo("F4", 115, 0x73, 1115, 2115),
+            "F5": KeyInfo("F5", 116, 0x74, 1116, 2116),
+            "F6": KeyInfo("F6", 117, 0x75, 1117, 2117),
+            "F7": KeyInfo("F7", 118, 0x76, 1118, 2118),
+            "F8": KeyInfo("F8", 119, 0x77, 1119, 2119),
+            "F9": KeyInfo("F9", 120, 0x78, 1120, 2120),
+            "F10": KeyInfo("F10", 121, 0x79, 1121, 2121),
+            "F11": KeyInfo("F11", 122, 0x7A, 1122, 2122),
+            "F12": KeyInfo("F12", 123, 0x7B, 1123, 2123),
+            "F13": KeyInfo("F13", 124, 0x7C, 1124, 2124),
+            "F14": KeyInfo("F14", 125, 0x7D, 1125, 2125),
+            "F15": KeyInfo("F15", 126, 0x7E, 1126, 2126),
+            "F16": KeyInfo("F16", 127, 0x7F, 1127, 2127),
+            "F17": KeyInfo("F17", 128, 0x80, 1128, 2128),
+            "F18": KeyInfo("F18", 129, 0x81, 1129, 2129),
+            "F19": KeyInfo("F19", 130, 0x82, 1130, 2130),
+            "F20": KeyInfo("F20", 131, 0x83, 1131, 2131),
+            "F21": KeyInfo("F21", 132, 0x84, 1132, 2132),
+            "F22": KeyInfo("F22", 133, 0x85, 1133, 2133),
+            "F23": KeyInfo("F23", 134, 0x86, 1134, 2134),
+            "F24": KeyInfo("F24", 135, 0x87, 1135, 2135),
+            "NumLock": KeyInfo("NumLock", 144, 0x90, 1144, 2144),
+            "ScrollLock": KeyInfo("ScrollLock", 145, 0x91, 1145, 2145),
+            "LeftShift": KeyInfo("LeftShift", 160, 0xA0, 1160, 2160),
+            "RightShift": KeyInfo("RightShift", 161, 0xA1, 1161, 2161),
+            "LeftCtrl": KeyInfo("LeftCtrl", 162, 0xA2, 1162, 2162),
+            "RightCtrl": KeyInfo("RightCtrl", 163, 0xA3, 1163, 2163),
+            "LeftMenu": KeyInfo("LeftMenu", 164, 0xA4, 1164, 2164),
+            "RightMenu": KeyInfo("RightMenu", 165, 0xA5, 1165, 2165),
+            "BrowserBack": KeyInfo("BrowserBack", 166, 0xA6, 1166, 2166),
+            "BrowserForward": KeyInfo("BrowserForward", 167, 0xA7, 1167, 2167),
+            "BrowserRefresh": KeyInfo("BrowserRefresh", 168, 0xA8, 1168, 2168),
+            "BrowserStop": KeyInfo("BrowserStop", 169, 0xA9, 1169, 2169),
+            "BrowserSearch": KeyInfo("BrowserSearch", 170, 0xAA, 1170, 2170),
+            "BrowserFavorites": KeyInfo("BrowserFavorites", 171, 0xAB, 1171, 2171),
+            "BrowserHome": KeyInfo("BrowserHome", 172, 0xAC, 1172, 2172),
+            "VolumeMute": KeyInfo("VolumeMute", 173, 0xAD, 1173, 2173),
+            "VolumeDown": KeyInfo("VolumeDown", 174, 0xAE, 1174, 2174),
+            "VolumeUp": KeyInfo("VolumeUp", 175, 0xAF, 1175, 2175),
+            "MediaNextTrack": KeyInfo("MediaNextTrack", 176, 0xB0, 1176, 2176),
+            "MediaPrevTrack": KeyInfo("MediaPrevTrack", 177, 0xB1, 1177, 2177),
+            "MediaStop": KeyInfo("MediaStop", 178, 0xB2, 1178, 2178),
+            "MediaPlayPause": KeyInfo("MediaPlayPause", 179, 0xB3, 1179, 2179),
+            "LaunchMail": KeyInfo("LaunchMail", 180, 0xB4, 1180, 2180),
+            "LaunchMediaSelect": KeyInfo("LaunchMediaSelect", 181, 0xB5, 1181, 2181),
+            "LaunchApp1": KeyInfo("LaunchApp1", 182, 0xB6, 1182, 2182),
+            "LaunchApp2": KeyInfo("LaunchApp2", 183, 0xB7, 1183, 2183),
         }
 
     def get_key_info(self, key_name):
